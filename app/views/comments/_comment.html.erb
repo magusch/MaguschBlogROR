@@ -10,6 +10,16 @@
     <td>
       <%= comment.body %>
     </td>
+    <td>
+      <p>Upvotes: <%= comment.upvotes_count %></p>
+      <% if user_signed_in? && !comment.voted_by?(current_user) %>
+        <%= button_to 'Upvote', upvote_article_comment_path(comment.article, comment), method: :post, params: { comment_id: comment.id } %>
+      <% elsif user_signed_in? && comment.voted_by?(current_user)%>
+        <%= button_to 'Unvote', unvote_article_comment_path(comment.article, comment), method: :delete, params: { comment_id: comment.id } %>
+      <% else %>
+        Log in please
+      <% end %>
+    </td>
   </table>
   <p>
     <%= link_to "Destroy Comment", [comment.article, comment], data: {

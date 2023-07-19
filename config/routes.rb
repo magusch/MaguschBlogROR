@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'comment_votes/create'
+  get 'comment_votes/destroy'
   get 'profiles/show'
   devise_for :users
   root "articles#index"
@@ -10,6 +12,10 @@ Rails.application.routes.draw do
       end
     end
   end
+
+
+  post 'articles/:article_id/comments/:comment_id/vote', to: 'comment_votes#create', as: :upvote_article_comment
+  delete 'articles/:article_id/comments/:comment_id/vote', to: 'comment_votes#destroy', as: :unvote_article_comment
 
   get '/profile', to: 'profiles#show', as: :user_profile
 end
