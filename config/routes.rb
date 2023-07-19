@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'profiles/show'
   devise_for :users
   root "articles#index"
 
@@ -9,4 +10,6 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  get '/profile', to: 'profiles#show', as: :user_profile
 end

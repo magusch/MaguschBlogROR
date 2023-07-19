@@ -19,6 +19,7 @@ Our blog has <%= Article.public_count %> articles and counting!
 
   <%= form_tag(destroy_user_session_path, method: :delete) do %>
     <%= submit_tag 'Sign Out' %>
+    <li><%= link_to 'My Profile', user_profile_path %></li>
   <% end %>
 <% else %>
   <%= link_to "Login", new_user_session_path %>
