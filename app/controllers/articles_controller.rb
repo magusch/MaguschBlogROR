@@ -1,11 +1,11 @@
 class ArticlesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :set_article, only: [:show, :edit, :update, :destroy]
   def index
     @articles = Article.all
   end
 
   def show
-    @article = Article.find(params[:id])
     authorize! :read, @post, message: "You need to be signed-in to do that."
   end
 
@@ -17,6 +17,7 @@ class ArticlesController < ApplicationController
     @article = Article.new(article_params)
 
     if @article.save
+      flash[:success] = "Article was successfully created"
       redirect_to @article
     else
       render :new, status: :unprocessable_entity
@@ -24,13 +25,11 @@ class ArticlesController < ApplicationController
   end
 
   def edit
-    @article = Article.find(params[:id])
   end
 
   def update
-    @article = Article.find(params[:id])
-
     if @article.update(article_params)
+      flash[:success] = "Article was successfully updated"
       redirect_to @article
     else
       render :edit, status: :unprocessable_entity
@@ -38,14 +37,17 @@ class ArticlesController < ApplicationController
   end
 
   def destroy
-    @article = Article.find(params[:id])
     @article.destroy
-
-    redirect_to root_path, status: :see_other
+    flash[:success] = "Article was deleted"
+    redirect_to articles_path, status: :see_other
   end
 
   private
   def article_params
     params.require(:article).permit(:title, :body, :status)
+  end
+
+  def set_article
+    @article = Article.find(params[:id])
   end
 end
