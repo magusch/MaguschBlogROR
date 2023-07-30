@@ -1,6 +1,6 @@
 <h1>Articles</h1>
 Our blog has <%= Article.public_count %> articles and counting!
-<ul>
+<div>
   <% @articles.each do |article| %>
     <div class="row">
       <div class="col-xs-8 col-xs-offset-2">
@@ -11,6 +11,9 @@ Our blog has <%= Article.public_count %> articles and counting!
           <div class="article-body">
             <%= truncate(article.body, length: 100) %>
           </div>
+          <div class="article-meta-details">
+            <%= article.user.email unless article.user.nil? %>
+          </div>
           <div class="article-actions">
             <%= link_to "Edit", edit_article_path(article), class: "btn btn-xs btn-primary" %>
             <%= link_to "Delete", article_path(article), method: :delete, data: { confirm: "Are you sure you want to delete this article?"}, class: "btn btn-xs btn-danger" %>
@@ -19,21 +22,8 @@ Our blog has <%= Article.public_count %> articles and counting!
       </div>
     </div>
   <% end %>
-</ul>
+</div>
 
 <%= link_to "New Article", new_article_path %>
-
-<b> Devise authentication</b>
-<% if user_signed_in? %>
-  <%# NEED JS %>
-  <%#= link_to "Logout", destroy_user_session_path, method: :delete  %>
-
-  <%= form_tag(destroy_user_session_path, method: :delete) do %>
-    <%= submit_tag 'Sign Out' %>
-    <li><%= link_to 'My Profile', user_profile_path %></li>
-  <% end %>
-<% else %>
-  <%= link_to "Login", new_user_session_path %>
-<% end %>
 
 
