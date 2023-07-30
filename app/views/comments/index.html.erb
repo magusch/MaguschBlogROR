@@ -1,0 +1,11 @@
+<h2><%= @article.title %></h2>
+
+<ul>
+  <% @article.comments.each do |comment| %>
+    <li>Status: <%= comment.status %></li>
+      <li><%= comment.body %></li>
+    ______
+  <% end %>
+
+
+</ul>
