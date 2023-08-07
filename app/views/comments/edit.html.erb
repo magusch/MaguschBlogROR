@@ -1,0 +1,7 @@
+<h2><%= @comment.article.title %></h2>
+<% @article=@comment.article %>
+<div class="col-xs-10 col-xs-offset-2">
+  <h2>Edit a comment:</h2>
+  <%= @comment.body %>
+  <%= render 'form' %>
+</div>
