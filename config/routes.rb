@@ -13,6 +13,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :pages do
+    member do
+      put :change_navbar_display
+    end
+  end
 
   post 'articles/:article_id/comments/:comment_id/vote', to: 'comment_votes#create', as: :upvote_article_comment
   delete 'articles/:article_id/comments/:comment_id/vote', to: 'comment_votes#destroy', as: :unvote_article_comment
