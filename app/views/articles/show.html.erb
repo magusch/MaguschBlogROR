@@ -8,7 +8,8 @@
   <p>User: <%= @article.user.email unless @article.user.nil? %></p>
 
 
-<% if can? :edit, @article %>
+<%# if can? :edit, @article %>
+  <% if current_user == @article.user %>
   <ul>
     <li><%= link_to "Edit", edit_article_path(@article), class: "btn btn-xs btn-primary" %></li>
     <li>
@@ -16,7 +17,7 @@
     </li>
   </ul>
 <% else %>
-  You don't have rights for edit or destroy it
+  <li>You don't have rights for edit or destroy it</li>
 <% end %>
   <%= link_to 'Back', articles_path, class: "btn btn-xs btn-success" %>
 
