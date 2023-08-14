@@ -9,13 +9,15 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <%= javascript_include_tag 'application' %>
+    <%= turbo_include_tags %>
+    <%= turbo_stream_from @comment %>
   </head>
 
   <body>
   <%= render 'layouts/navigation' %>
   <%= render 'shared/messages' %>
   <%= yield %>
-
+  <%= render 'layouts/footer' %>
 
   </body>
 </html>
