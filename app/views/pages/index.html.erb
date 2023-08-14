@@ -1,12 +1,17 @@
 <h1>Pages</h1>
 <div>
   <ul>
+
     <% @pages.each do |page| %>
-      <li>
+      <li class="col-xs-8 col-xs-offset-2">
         <%= link_to page.page_name, page_path(page) %>
       </li>
     <% end %>
   </ul>
+  <p>
+</div>
+<div><p>
 <h2> Create</h2>
   <%= link_to "Create Page", new_page_path %>
+  </p>
 </div>

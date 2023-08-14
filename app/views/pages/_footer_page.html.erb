@@ -1,6 +1,5 @@
-<% @pages_navbar.each do |page| %>
+<% @pages_footer.each do |page| %>
     <td class="col-sm-2 col-3 p-3 mb-2">
-      <%= link_to page.page_name, page_path(page) %>
         <p><%= simple_format(page.page_text) %></p>
     </td>
 <% end %>

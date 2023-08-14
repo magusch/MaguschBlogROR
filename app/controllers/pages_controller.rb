@@ -1,8 +1,8 @@
 class PagesController < ApplicationController
-  before_action :set_page, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :set_page, only: [:show, :edit, :update, :destroy, :change_navbar_display]
   def show
     authorize! :read, @post, message: "You need to be signed-in to do that."
-
   end
 
   def index
@@ -10,22 +10,39 @@ class PagesController < ApplicationController
   end
 
   def new
-    @pages = Page.new
+    @page = Page.new
   end
 
   def create
-    @pages = Page.new(page_params)
+    @page = Page.new(page_params)
 
-    if @pages.save
+    if @page.save
       flash[:success] = "Page was successfully created"
-      redirect_to @pages
+      redirect_to @page
     else
       render :new, status: :unprocessable_entity
     end
   end
 
+  def destroy
+    @page.destroy
+    flash[:success] = "Page was deleted"
+    redirect_to pages_path, status: :see_other
+  end
+
+  def edit
+  end
+
+  def update
+    if @page.update(page_params)
+      flash[:success] = "Article was successfully updated"
+      redirect_to @page
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def change_navbar_display
-    @page = Page.find(params[:id])
     @page.toggle(:navbar_display).save
     redirect_to page_path(@page)
   end
