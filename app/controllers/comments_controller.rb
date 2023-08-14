@@ -8,7 +8,14 @@ class CommentsController < ApplicationController
   def create
     @article = Article.find(params[:article_id])
     @comment = @article.comments.create(comment_params)
+    #redirect_to article_path(@article)
+    @comment.save
     redirect_to article_path(@article)
+      #turbo_stream.append "comment-form", partial: 'comments/comment', locals: { comment: @comment }
+      #render turbo_stream: turbo_stream.replace("comments-list", partial: 'comments/comment', collection: @article.comments)
+    # else
+    #   render :new
+    # end
   end
 
   def archive
@@ -21,6 +28,7 @@ class CommentsController < ApplicationController
   def destroy
     @comment = Comment.find(params[:id])
     @article = @comment.article
+
     @comment.destroy
     flash[:success] = "Comment was deleted"
     redirect_to article_path(@article), status: :see_other

@@ -1,5 +1,5 @@
 class Comment < ApplicationRecord
-  has_many :comment_votes
+  has_many :comment_votes, dependent: :destroy
   include Visible
   belongs_to :article
 
