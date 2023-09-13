@@ -11,6 +11,8 @@ Things you may want to cover:
 
 * Configuration
 
+  ``` EDITOR="/Applications/RubyMine.app/Contents/MacOS/rubymine --wait" bin/rails credentials:edit ```
+
 * Database creation
 
 * Database initialization
