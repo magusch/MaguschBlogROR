@@ -60,7 +60,7 @@ gem 'jquery-rails'
 gem 'rails-ujs'
 gem 'hotwire-rails'
 
-
+gem "aws-sdk-s3", require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
