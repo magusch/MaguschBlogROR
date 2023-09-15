@@ -1,8 +1,8 @@
 class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_page, only: [:show, :edit, :update, :destroy, :change_navbar_display]
+  before_action -> { check_authenticate_for_edit(@page) }, only: [:new, :create, :edit, :update, :destroy]
   def show
-    authorize! :read, @post, message: "You need to be signed-in to do that."
   end
 
   def index

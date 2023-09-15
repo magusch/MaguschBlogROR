@@ -7,10 +7,18 @@ class CommentsController < ApplicationController
 
   def create
     @article = Article.find(params[:article_id])
-    @comment = @article.comments.create(comment_params)
+    if @article.comments.count >= 100
+      flash[:success] = "It has to much comments"
+      redirect_to article_path(@article)
+    else
+      @comment = @article.comments.create(comment_params)
+      @comment.save
+      redirect_to article_path(@article)
+    end
+
+
     #redirect_to article_path(@article)
-    @comment.save
-    redirect_to article_path(@article)
+
       #turbo_stream.append "comment-form", partial: 'comments/comment', locals: { comment: @comment }
       #render turbo_stream: turbo_stream.replace("comments-list", partial: 'comments/comment', collection: @article.comments)
     # else
