@@ -62,6 +62,7 @@ gem 'hotwire-rails'
 
 gem "aws-sdk-s3", require: false
 gem 'nokogiri', '1.15.2'
+gem 'redcarpet'
 
 gem 'pg'
 
