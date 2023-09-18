@@ -3,6 +3,7 @@ class ArticlesController < ApplicationController
 
   before_action :set_article, only: [:show, :edit, :update, :destroy]
   before_action -> { check_authenticate_for_edit(@article) }, only: [:new, :create, :edit, :update, :destroy]
+  include MarkdownHelper
   def index
     @articles = Article.all
   end
@@ -41,6 +42,12 @@ class ArticlesController < ApplicationController
     @article.destroy
     flash[:success] = "Article was deleted"
     redirect_to articles_path, status: :see_other
+  end
+
+  def markdown_to_html
+    input_text = params[:input_text]
+    html_text = markdown(input_text)
+    render json: { html_text: html_text }
   end
 
   private

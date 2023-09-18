@@ -40,6 +40,37 @@
       <%= form.submit class: 'btn btn-primary btn-large' %>
     </div>
   </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <a id="markdownText">Show result</a>
+      <p>
+        <div id="html_body_text" ></div>
+      </p>
+    </div>
+  </div>
+
+  <script>
+      $(document).ready(function () {
+          $('#markdownText').click(function () {
+              // Get the text from the textarea
+              var articleBody = $('#article_body').val();
+
+              // Make an AJAX POST request to your 'page' endpoint
+              $.ajax({
+                  type: 'POST',
+                  url: '/articles/markdown_to_html', // Replace with the actual URL of your 'page' endpoint
+                  data: { input_text: articleBody }, // Send the article body as data
+                  success: function (response) {
+                      // Update the content of the 'ready_html_text' div with the response
+                      $('#html_body_text').html(response['html_text']);
+                  },
+                  error: function (error) {
+                      console.error('Error:', error);
+                  },
+              });
+          });
+      });
+  </script>
 
 
 

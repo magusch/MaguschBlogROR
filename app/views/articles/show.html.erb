@@ -1,3 +1,4 @@
+
 <h2 align="center">Title: <%= @article.title %></h2>
 <div class="well col-xs-8 col-xs-offset-2">
   <div class="article-body">
@@ -6,7 +7,8 @@
 
   <h4 class="center"><strong>Description:</strong></h4>
   <hr>
-<p><%= simple_format(@article.body) %></p>
+<p><%= markdown(@article.body) %></p>
+
 
 <p>Status: <%= @article.status %></p>
   <p>User: <%= @article.user.email unless @article.user.nil? %></p>
