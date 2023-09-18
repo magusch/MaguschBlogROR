@@ -30,6 +30,15 @@ class ArticlesController < ApplicationController
   end
 
   def update
+
+    images_to_delete = params[:article][:images_to_delete]
+
+    if images_to_delete.present?
+      # Detach the selected images from the article
+      @article.images.where(id: images_to_delete).purge
+    end
+
+
     if @article.update(article_params)
       if params[:article][:images].present?
         @article.images.attach(params[:article][:images])
