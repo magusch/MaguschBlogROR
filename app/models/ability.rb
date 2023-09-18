@@ -8,7 +8,10 @@ class Ability
       can :manage, :all
     else
       can :read, :all
-      # Add additional permissions based on your requirements
+
+      cannot :manage, :all do |resource|
+        raise CanCan::AccessDenied
+      end
     end
   end
 end

@@ -1,12 +1,13 @@
 class ArticlesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+
   before_action :set_article, only: [:show, :edit, :update, :destroy]
+  before_action -> { check_authenticate_for_edit(@article) }, only: [:new, :create, :edit, :update, :destroy]
   def index
     @articles = Article.all
   end
 
   def show
-    authorize! :read, @post, message: "You need to be signed-in to do that."
   end
 
   def new
