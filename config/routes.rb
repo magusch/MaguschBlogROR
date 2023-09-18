@@ -11,6 +11,12 @@ Rails.application.routes.draw do
         put :archive
       end
     end
+
+    collection do
+      post 'markdown_to_html'
+      get 'markdown_to_html'
+    end
+
   end
 
   resources :pages do

@@ -1,5 +1,7 @@
 <%= render 'shared/errors', obj: @article %>
-<%= form_for(@article, :html => {class: "form-horizontal", role: "form"}) do |form| %>
+<%= form_for(@article, :html => {class: "form-horizontal", role: "form", multipart: true}) do |form| %>
+
+  <!--  Title of article -->
   <div class="form-group">
     <div class="control-label col-sm-2">
       <%= form.label :title %>
@@ -9,6 +11,7 @@
     </div>
   </div>
 
+  <!--  Text of article -->
   <div class="form-group">
     <div class="control-label col-sm-2">
       <%= form.label :body %>
@@ -17,6 +20,8 @@
       <%= form.text_area :body, rows: 10, class: "form-control", placeholder: "Body of article" %>
     </div>
   </div>
+
+  <!--  Status of article -->
   <div class="form-group">
     <div class="control-label col-sm-2">
       <%= form.label :status %>
@@ -25,14 +30,47 @@
       <%= form.select :status, ['public', 'private', 'archived'], prompt: "Select Status", class: "form-control" %>
     </div>
   </div>
+
+
+  <!--  Deleting images -->
+  <% if !@article.images.empty? %>
+    <div class="form-group">
+      <div class="control-label col-sm-2">
+        <b>Choose images to delete</b>
+      </div>
+      <div class="col-sm-6">
+        <table>
+          <% count_images = 0 %>
+          <% @article.images.each do |image| %>
+            <% count_images += 1 %>
+            <td>
+              <%= check_box_tag "article[images_to_delete]", image.id %>
+              <%= image_tag(image, width: '40%', id: "image-#{count_images}") %>
+              <button type="button" class="btn btn-info" onclick="addImageToTextArea('<image-<%= count_images %>>')">add image-<%= count_images %></button>
+            </td>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  <% end %>
+
+  <!--  Uploading images -->
   <div class="form-group">
     <div class="control-label col-sm-2">
-      <%= form.label :image %>
+      <%= form.label :images, 'Upload Images' %>
     </div>
     <div class="col-sm-6">
-      <%= form.file_field :image %>
+      <div class="field">
+        <%= form.file_field :images, multiple: true, class: "form-control", accept: "image/*"  %>
+      </div>
+      <p>
+      <div class="form-group">
+        <div id="image-selected"></div>
+      </div>
+      </p>
     </div>
   </div>
+
   <div class="form-group">
     <%= form.hidden_field :user_id, value: current_user.id %>
 
@@ -40,6 +78,97 @@
       <%= form.submit class: 'btn btn-primary btn-large' %>
     </div>
   </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <a id="markdownText">Show result</a>
+      <p>
+        <div id="html_body_text" ></div>
+      </p>
+    </div>
+  </div>
+
+  <script>
+
+      function addImageToTextArea() {
+          var textArea = document.getElementById("article_body");
+          textArea.value += arguments[0];
+      }
+
+      const count_images = <%= count_images %>;
+      // Add to array images_data all existed images from article
+      images_data = [];
+      for (let i=0; i < count_images; i++) {
+          image_html = '<div class="image-preview" >' +
+              '<img src="' + document.getElementById(`image-${i+1}`).src + '"  width="40%" alt="Image Preview" />' +
+              '<p>Image ' + (i+1) + '</p>' +
+              '</div>';
+          images_data.push(image_html);
+      }
+
+      // Add to array images_data all images that will upload with their viewing
+      $(document).ready(function () {
+          $('#article_images').on('change', function () {
+
+
+              const previewContainer = $('#image-selected');
+              previewContainer.empty();
+              const files = $(this)[0].files;
+              previewContainer.append("<div class='col-sm-2'>" + files.length + " images selected:</div>");
+              for (let i = 0; i < files.length; i++) {
+                  const file = files[i];
+                  const reader = new FileReader();
+                  const image_number = i + 1 + count_images;
+                  reader.onload = function (e) {
+                      const preview = `<div class="image-preview" >
+                          <img src="${e.target.result}"  width="40%" alt="Image Preview" />
+                          <p>Image ${image_number}</p>
+                        </div>`;
+                      images_data.push(preview)
+                      // previewContainer.append(preview);
+                      // add function with button [image-1] [image-2] [image-3] to textarea
+                      previewContainer.append(`
+                             <div class="col-sm-3">
+                               <button type="button" class="btn btn-info" onclick="addImageToTextArea('<image-${image_number}>')">add image-${image_number}</button>
+                                </div>
+                            `)
+                  };
+
+                  reader.readAsDataURL(file);
+              }
+
+
+
+          });
+      });
+
+
+      $(document).ready(function () {
+          $('#markdownText').click(function () {
+              // Get the text from the textarea
+              var articleBody = $('#article_body').val();
+              // Make an AJAX POST request to your 'page' endpoint
+              $.ajax({
+                  type: 'POST',
+                  url: '/articles/markdown_to_html', // Replace with the actual URL of your 'page' endpoint
+                  data: { input_text: articleBody, images_data: images_data }, // Send the article body as data
+                  success: function (response) {
+
+                      prepared_post = response['html_text'];
+
+
+                      // Update the content of the 'ready_html_text' div with the response
+                      $('#html_body_text').html(prepared_post);
+                  },
+                  error: function (error) {
+                      console.error('Error:', error);
+                  },
+              });
+          });
+      });
+
+
+
+  </script>
 
 
 
