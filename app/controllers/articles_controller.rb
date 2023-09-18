@@ -31,6 +31,9 @@ class ArticlesController < ApplicationController
 
   def update
     if @article.update(article_params)
+      if params[:article][:images].present?
+        @article.images.attach(params[:article][:images])
+      end
       flash[:success] = "Article was successfully updated"
       redirect_to @article
     else
@@ -53,7 +56,7 @@ class ArticlesController < ApplicationController
 
   private
   def article_params
-    params.require(:article).permit(:title, :body, :status, :user_id, :images => [])
+    params.require(:article).permit(:title, :body, :status, :user_id)
   end
 
   def set_article
