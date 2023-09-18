@@ -3,7 +3,7 @@ class ArticlesController < ApplicationController
 
   before_action :set_article, only: [:show, :edit, :update, :destroy]
   before_action -> { check_authenticate_for_edit(@article) }, only: [:new, :create, :edit, :update, :destroy]
-  include MarkdownHelper
+  include ArticlesHelper
   def index
     @articles = Article.all
   end
@@ -46,7 +46,8 @@ class ArticlesController < ApplicationController
 
   def markdown_to_html
     input_text = params[:input_text]
-    html_text = markdown(input_text)
+    images = params[:images_data] || []
+    html_text = prepare_article(input_text, images)
     render json: { html_text: html_text }
   end
 

@@ -56,16 +56,17 @@
 
   <script>
 
-    function addImageToTextArea() {
-        var textArea = document.getElementById("article_body");
-        textArea.value += arguments[0];
-    }
+      function addImageToTextArea() {
+          var textArea = document.getElementById("article_body");
+          textArea.value += arguments[0];
+      }
+
+      images_data = [];
 
       $(document).ready(function () {
           $('#article_images').on('change', function () {
               const previewContainer = $('#image-selected');
               previewContainer.empty();
-              images_data = []
               const files = $(this)[0].files;
               for (let i = 0; i < files.length; i++) {
                   const file = files[i];
@@ -80,7 +81,7 @@
                       // previewContainer.append(preview);
                       // add function with button [image-1] [image-2] [image-3] to textarea
                       previewContainer.append(`
-                               <button type="button" class="btn btn-info" onclick="addImageToTextArea('[image-${i + 1}]')">[image-${i + 1}]</button>
+                               <button type="button" class="btn btn-info" onclick="addImageToTextArea('<image-${i + 1}>')">add image-${i + 1}</button>
                             `)
                   };
 
@@ -101,14 +102,11 @@
               $.ajax({
                   type: 'POST',
                   url: '/articles/markdown_to_html', // Replace with the actual URL of your 'page' endpoint
-                  data: { input_text: articleBody }, // Send the article body as data
+                  data: { input_text: articleBody, images_data: images_data }, // Send the article body as data
                   success: function (response) {
 
                       prepared_post = response['html_text'];
-                      // replace [image-1] with the first image
-                      for (var i = 0; i < images_data.length; i++) {
-                          prepared_post = prepared_post.replace("[image-" + (i + 1) + "]", images_data[i]);
-                      }
+
 
                       // Update the content of the 'ready_html_text' div with the response
                       $('#html_body_text').html(prepared_post);
