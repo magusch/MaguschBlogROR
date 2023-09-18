@@ -2,7 +2,9 @@
 <h2 align="center">Title: <%= @article.title %></h2>
 <div class="well col-xs-8 col-xs-offset-2">
   <div class="article-body">
-    <%= image_tag(@article.image, class: "img-fluid", width: '100%') if @article.image.attached? %>
+    <% @article.images.each do |image| %>
+      <%= image_tag(image, class: "img-fluid", width: '100%')  %>
+    <% end %>
   </div>
 
   <h4 class="center"><strong>Description:</strong></h4>
