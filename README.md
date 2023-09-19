@@ -7,11 +7,13 @@ Things you may want to cover:
 
 * Ruby version
 
+  3.0.6
+
 * System dependencies
 
 * Configuration
 
-  ``` EDITOR="/Applications/RubyMine.app/Contents/MacOS/rubymine --wait" bin/rails credentials:edit ```
+  ``` EDITOR="Path/To/Editor --wait" bin/rails credentials:edit ```
 
 * Database creation
 
