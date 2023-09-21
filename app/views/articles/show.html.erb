@@ -10,7 +10,7 @@
 <div class="well col-xs-8 col-xs-offset-2">
   <h2>Title: <%= @article.title %></h2>
   <div class="article-body">
-    <%= prepare_article(@article.body, images_data) %>
+    <%= simple_format(prepare_article(@article.body, images_data)) %>
   </div>
 
 <p>Status: <%= @article.status %></p>
@@ -31,19 +31,7 @@
   <%= link_to 'Back', articles_path, class: "btn btn-xs btn-success" %>
 
 </div>
+
 <div class="well col-xs-8 col-xs-offset-2">
-  <div class="well col-xs-8 col-xs-offset-2">
-    <h2>Comments</h2>
-    <%= turbo_frame_tag 'comments-list' do %>
-      <%= render partial: 'comments/comments_list', locals: { comments: @article.comments } %>
-
-      <%#= render @article.comments %>
-    <% end %>
-  </div>
-
-  <br>
-  <div class="col-xs-10 col-xs-offset-2">
-    <h2>Add a comment:</h2>
-    <%= render 'comments/form' %>
-  </div>
+  <%= render 'comments/comments' %>
 </div>

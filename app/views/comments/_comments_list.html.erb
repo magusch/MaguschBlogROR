@@ -1,3 +1,12 @@
-<% comments.each do |comment| %>
-  <%= render 'comments/comment', comment:comment %>
+<%= turbo_frame_tag 'comments-list' do %>
+  <% comments.each do |comment| %>
+    <%= render 'comments/comment', comment:comment %>
+  <% end %>
 <% end %>
+
+<%#= turbo_frame_tag "first_turbo_frame" do %>
+<!--  <div class="header">-->
+<!--    <h1>Quotes</h1>-->
+    <%#= link_to "New comment", new_comment_path, class: "btn btn--primary" %>
+<!--  </div>-->
+<%# end %>

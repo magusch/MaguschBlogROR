@@ -1,0 +1,21 @@
+<div class="well col-xs-8 col-xs-offset-2">
+  <h2>Comments</h2>
+  <%#= turbo_frame_tag 'comments-list' do %>
+    <%= render partial: 'comments/comments_list', locals: { comments: @article.comments } %>
+  <%# end %>
+</div>
+
+<br>
+<div class="col-xs-10 col-xs-offset-2">
+  <h2>Add a comment:</h2>
+  <%= turbo_frame_tag "first_turbo_frame" do %>
+    <%= link_to "New comment",
+                new_article_comment_path(@article),
+                data: { turbo_frame: "comments-list" },
+                class: "btn btn--primary" %>
+    </div>
+  <% end %>
+
+
+  <%#= render 'comments/form' %>
+</div>

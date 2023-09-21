@@ -1,3 +1,4 @@
+<%= turbo_frame_tag "comment_#{comment.id}" do %>
 <% unless comment.archived? %>
   <div class="well">
   <table>
@@ -23,12 +24,18 @@
         Log in please
       <% end %>
     </td>
-<!--    <td>-->
-      <%#= link_to "Edit", edit_article_comment_path(comment.article, comment), class: "btn btn-xs btn-primary" %>
-<!--    </td>-->
+    <td>
+      <%= link_to "Edit",
+                  edit_article_comment_path(comment.article, comment),
+                  class: "btn btn-xs btn-primary",
+                  "data-turbo-frame": "comment_#{comment.id}"
+      %>
+    </td>
     <td class="col-sm-3">
-      <%#= link_to "Delete", article_comment_path(comment.article, comment), method: :delete, data: { confirm: "Are you sure you want to delete this comment?"}, class: "btn btn-xs btn-danger" , "data-turbo-frame": "comment_#{comment.id}" %>
-      <%= link_to "Delete", article_comment_path(@article, comment), method: :delete, data: { confirm: "Are you sure?" }, "data-turbo-frame": "comment_#{comment.id}" %>
+      <%= link_to 'Delete',
+                  article_comment_path(@article, comment),
+                  class: "btn btn-xs btn-danger",
+                  data: { turbo_method: 'delete', turbo_confirm: 'Really?' } %>
     </td>
     <td class="col-sm-3">
       <%= link_to "Archive", archive_article_comment_path(comment.article, comment), method: :put, class: "btn btn-xs btn-info" %>
@@ -42,4 +49,5 @@
     <%#= comment.commenter %>
 <!--    <%#= comment.body %> (archived)-->
     <%# end %>
+<% end %>
 <% end %>

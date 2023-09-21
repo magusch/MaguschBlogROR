@@ -53,6 +53,7 @@ gem "bootsnap", require: false
 gem 'devise'
 gem 'cancancan'
 gem 'factory_bot_rails'
+gem 'will_paginate', '~> 3.0'
 
 gem 'bootstrap-sass', '~> 3.4.1'
 gem 'sassc-rails', '>= 2.1.0'
