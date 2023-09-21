@@ -2,6 +2,9 @@
 <% @article=@comment.article %>
 <div class="col-xs-10 col-xs-offset-2">
   <h2>Edit a comment:</h2>
-  <%= @comment.body %>
-  <%= render 'form' %>
+  <%= turbo_frame_tag "comment_#{@comment.id}" do %>
+    <%= render "form" %>
+  <% end %>
+  <%#= @comment.body %>
+  <%#= render 'form' %>
 </div>
