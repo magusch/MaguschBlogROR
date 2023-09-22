@@ -5,10 +5,11 @@ class ArticlesController < ApplicationController
   before_action -> { check_authenticate_for_edit(@article) }, only: [:new, :create, :edit, :update, :destroy]
   include ArticlesHelper
   def index
-    @articles = Article.all
+    @articles = Article.paginate(page: params[:page], per_page: 5)
   end
 
   def show
+    authorize! :read, @article
   end
 
   def new
@@ -65,7 +66,7 @@ class ArticlesController < ApplicationController
 
   private
   def article_params
-    params.require(:article).permit(:title, :body, :status, :user_id)
+    params.require(:article).permit(:title, :body, :status, :user_id, :page)
   end
 
   def set_article

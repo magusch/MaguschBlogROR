@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_action :authenticate_user!, only: [:archive, :destroy]
+  before_action :authenticate_user!, only:  [:new, :create, :edit, :update, :destroy]
 
   def index
     @article = Article.find(params[:article_id])
@@ -12,8 +12,14 @@ class CommentsController < ApplicationController
       redirect_to article_path(@article)
     else
       @comment = @article.comments.create(comment_params)
-      @comment.save
-      redirect_to article_path(@article)
+      if @comment.save
+        #redirect_to article_path(@article)
+        render turbo_stream:
+                 turbo_stream.replace(
+                   "comments-list",
+                   partial: "comments/comments_list",
+                   locals: { comments: @article.comments })
+      end
     end
 
 
@@ -29,21 +35,54 @@ class CommentsController < ApplicationController
   def archive
     @comment = Comment.find(params[:id])
     @comment.status = 'archived'
-    @comment.save
-    redirect_to article_path(@comment.article)
+    if @comment.save
+      render turbo_stream:
+               turbo_stream.replace(
+                 "comment_#{@comment.id}",
+                 partial: "comments/comment",
+                 locals: { comment: @comment }
+               )
+    else
+      redirect_to article_path(@comment.article)
+    end
+
+  end
+
+  def publish
+    @comment = Comment.find(params[:id])
+    @comment.status = 'public'
+    if @comment.save
+      render turbo_stream:
+               turbo_stream.replace(
+                 "comment_#{@comment.id}",
+                 partial: "comments/comment",
+                 locals: { comment: @comment }
+               )
+    else
+      redirect_to article_path(@comment.article)
+    end
   end
 
   def destroy
     @comment = Comment.find(params[:id])
     @article = @comment.article
 
-    @comment.destroy
-    flash[:success] = "Comment was deleted"
-    redirect_to article_path(@article), status: :see_other
+    if @comment.destroy
+      render turbo_stream:
+             turbo_stream.remove(
+               "comment_#{@comment.id}"
+             )
+    end
+    #    redirect_to article_path(@article), status: :see_other
   end
 
   def edit
     @comment = Comment.find(params[:id])
+  end
+
+  def new
+    @article = Article.find(params[:article_id])
+    @article.comments.new()
   end
 
   def update
