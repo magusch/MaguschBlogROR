@@ -2,7 +2,7 @@
   <% comments.each do |comment| %>
     <% if !comment.archived? %>
       <%= render 'comments/comment', comment:comment %>
-    <% elsif current_user.admin %>
+    <% elsif current_user and current_user.admin %>
       <%= render 'comments/comment', comment:comment %>
     <% end %>
   <% end %>

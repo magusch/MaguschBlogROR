@@ -2,6 +2,7 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!, only:  [:new, :create, :edit, :update, :destroy]
 
   def index
+    @article = Article.find(params[:article_id])
   end
 
   def create
