@@ -1,8 +1,6 @@
 <div class="well col-xs-8 col-xs-offset-2">
   <h2>Comments</h2>
-  <%#= turbo_frame_tag 'comments-list' do %>
-    <%= render partial: 'comments/comments_list', locals: { comments: @article.comments } %>
-  <%# end %>
+  <%= render partial: 'comments/comments_list', locals: { comments: @article.comments } %>
 </div>
 
 <br>
@@ -15,7 +13,4 @@
                 class: "btn btn--primary" %>
     </div>
   <% end %>
-
-
-  <%#= render 'comments/form' %>
 </div>

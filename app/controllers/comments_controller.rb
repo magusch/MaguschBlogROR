@@ -1,8 +1,7 @@
 class CommentsController < ApplicationController
-  before_action :authenticate_user!, only: [:archive, :destroy]
+  before_action :authenticate_user!, only:  [:new, :create, :edit, :update, :destroy]
 
   def index
-    @article = Article.find(params[:article_id])
   end
 
   def create
@@ -35,18 +34,38 @@ class CommentsController < ApplicationController
   def archive
     @comment = Comment.find(params[:id])
     @comment.status = 'archived'
-    @comment.save
-    redirect_to article_path(@comment.article)
+    if @comment.save
+      render turbo_stream:
+               turbo_stream.replace(
+                 "comment_#{@comment.id}",
+                 partial: "comments/comment",
+                 locals: { comment: @comment }
+               )
+    else
+      redirect_to article_path(@comment.article)
+    end
+
+  end
+
+  def publish
+    @comment = Comment.find(params[:id])
+    @comment.status = 'public'
+    if @comment.save
+      render turbo_stream:
+               turbo_stream.replace(
+                 "comment_#{@comment.id}",
+                 partial: "comments/comment",
+                 locals: { comment: @comment }
+               )
+    else
+      redirect_to article_path(@comment.article)
+    end
   end
 
   def destroy
     @comment = Comment.find(params[:id])
     @article = @comment.article
 
-
-    # flash[:success] = "Comment was deleted"
-    #render turbo_stream: turbo_stream.remove("comment_#{@comment.id}")
-    #render turbo_stream: turbo_stream.replace("comments-list", "")
     if @comment.destroy
       render turbo_stream:
              turbo_stream.remove(
