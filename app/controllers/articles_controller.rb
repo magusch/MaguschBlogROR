@@ -9,6 +9,7 @@ class ArticlesController < ApplicationController
   end
 
   def show
+    authorize! :read, @article
   end
 
   def new

@@ -7,11 +7,13 @@ class Ability
     if user.admin?
       can :manage, :all
     else
-      can :read, :all
+      can :read, Article, status: 'public'
+      can :read, Article, status: 'archived', user_id: user.id
 
-      cannot :manage, :all do |resource|
-        raise CanCan::AccessDenied
-      end
+
+      # cannot :manage, :all do |resource|
+      #   raise CanCan::AccessDenied
+      # end
     end
   end
 end
