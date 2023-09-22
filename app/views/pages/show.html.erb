@@ -1,6 +1,5 @@
-<h2 align="center"><%= @page.page_name %></h2>
+<h2 class="text-center"><%= @page.page_name %></h2>
 <div class="well col-xs-8 col-xs-offset-2">
-  <hr>
   <p><%= simple_format(@page.page_text) %></p>
   <p>
     <% if current_user %>

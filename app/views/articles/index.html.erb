@@ -1,6 +1,8 @@
 <div class="justify-content-between">
-  <h1>Articles</h1>
-  Our blog has <%= Article.public_count %> articles and counting!
+  <div style="margin:5px">
+    <h1>Articles</h1>
+    The blog has <%= Article.public_count %> articles!
+  </div>
   <% @articles.each do |article| %>
     <% if article.status=='public' or current_user == article.user %>
       <div class="row">
@@ -13,7 +15,7 @@
               <%= image_tag article.images[0], class: "rounded img-thumbnail" if article.images[0] %>
             </div>
             <div class="article-body">
-              <%= prepare_article(truncate(article.body, length: 100)) %>
+              <%= simple_format(truncate(prepare_article(article.body, []), length: 100)) %>
             </div>
             <div class="article-meta-details">
               <%= article.user.email unless article.user.nil? %>
