@@ -11,5 +11,6 @@ RUN bundle lock --add-platform x86_64-linux
 RUN gem install bundler
 RUN bundle install
 COPY . /app/
+RUN mkdir -p /app/public/assets
 EXPOSE 3000
 CMD ["rails", "server", "-b", "0.0.0.0"]
